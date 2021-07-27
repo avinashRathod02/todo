@@ -1,9 +1,22 @@
 import React from 'react';
 import { Text,Button, View, StyleSheet, TextInput ,StatusBar} from 'react-native'
-
+import { connect } from 'react-redux'
+import { addTodo } from '../actions';
+import store from '../store'
 class Add extends React.Component {
+    state = {
+        title: '',
+        desc:''
+    }
+
+    addTodo = (title,desc) => {
+        //redux store 
+        this.props.dispatch({ type: 'ADD_TODO', title,desc})
+        this.setState({ title: '',desc: '' })
+    }
     render() {
         const {navigation} = this.props;
+        const {title,desc} =  this.state;
         return (
             <View style={styles.container}>
                 <View style={{
@@ -20,10 +33,14 @@ class Add extends React.Component {
                 </View>
                 <Text> Add new task </Text>
                 <TextInput
+                onChangeText={(title) => this.setState({ title })}
+                value={title}
                 style={styles.title}
                 placeholder={"Title"}
                 />
                 <TextInput
+                onChangeText={(desc) => this.setState({ desc })}
+                value={desc}
                 style={styles.desc}
                 placeholder={"Description"}
                 />
@@ -31,11 +48,12 @@ class Add extends React.Component {
                 <Button
                 title={'Save'}
                 color='green'
-                onPress={()=>{console.log('save button called');}}
+                onPress={()=>{this.addTodo(title,desc)}}
                 />
                 <Button
-                title={'Reset'}
-                onPress={()=>{console.log('reset button called')}}
+                title={'Delete'}
+                color='red'
+                onPress={()=>{console.log(store.getState)}}
                 />
                 </View>
             </View>
@@ -70,5 +88,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Add;
+export default connect()(Add);
 

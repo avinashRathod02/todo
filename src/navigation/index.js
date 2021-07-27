@@ -6,12 +6,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import todos from '../screens/todos';
 import Add from '../screens/editTodos';
 
+export const navigationRef = React.createRef();
+
+export function navigate(name, params) {
+  navigationRef.current?.navigate(name, params);
+}
 const Stack = createStackNavigator();
 // StatusBar.setHidden(true);
 class ApplicationNavigator extends React.Component {
   render() {
     return (
-      <NavigationContainer      >
+      <NavigationContainer    ref={navigationRef}   >
         <Stack.Navigator
         screenOptions={{
           headerShown: false,
