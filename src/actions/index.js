@@ -1,14 +1,17 @@
-import { ADD_TODO, TOGGLE_TODO } from './constant'
-
-let nextId = 0
-export const addTodo = (titke,desc) => ({
-    type: ADD_TODO,
-    id: nextId++,
-    title,
-    desc
-})
+import { ACTION_CONT } from "../constants/actions";
+let nextId = 0;
+export const addTodo = (titke, desc) => ({
+  type: ACTION_CONT.ADD_TODO,
+  id: nextId++,
+  title,
+  desc,
+});
 
 export const toggleTodo = (id) => ({
-    type: TOGGLE_TODO,
-    id
-})
+  type: ACTION_CONT.TOGGLE_TODO,
+  id,
+});
+export const deleteTodo = (id) => ({
+  type: ACTION_CONT.DELETE_TODO,
+  id,
+});
