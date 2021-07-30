@@ -4,9 +4,16 @@ export const EDIT_TODO_STYLES = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight,
-    backgroundColor: COLOR_CONT.WHITE,
+    backgroundColor: COLOR_CONT.BLACK,
     alignItems: "center",
     // justifyContent: "center",
+  },
+  headerText: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: COLOR_CONT.TRANSPARENT,
+    color: COLOR_CONT.WHITE,
+    fontSize: 20,
   },
   title: {
     borderWidth: 0.1,

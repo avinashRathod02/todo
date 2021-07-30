@@ -1,19 +1,23 @@
 import { StyleSheet } from "react-native";
+import { COLOR_CONT } from "../../constants/colors";
 
-export default StyleSheet.create({
+export const INPUT_STYLES = StyleSheet.create({
   input: {
-    height: 30,
     padding: 5,
+    color: COLOR_CONT.WHITE,
   },
   inputContainer: {
     borderBottomWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.4)",
+    borderColor: COLOR_CONT.GRAY,
     marginTop: 20,
   },
   valid: {
-    borderColor: "#53E69D",
+    borderColor: COLOR_CONT.GREEN,
   },
   invalid: {
-    borderColor: "#F55E64",
+    borderColor: COLOR_CONT.RED,
+  },
+  error: {
+    color: COLOR_CONT.RED,
   },
 });

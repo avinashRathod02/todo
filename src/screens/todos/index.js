@@ -48,8 +48,7 @@ const ListItems = (item, index) => {
         color={COLOR_CONT.BLACK}
         title={TODOS_CONST.EDIT}
         onPress={() => {
-          console.log("edit button pressed " + item.index);
-          navigation.navigate(ROUTE_CONT.EDITTODO);
+          navigation.navigate(ROUTE_CONT.EDITTODO,{editMode : true,id:item.item.id,title:item.item.title,desc:item.item.desc});
         }}
       />
       <Button
@@ -72,7 +71,8 @@ const TodoList = ({ todos, toggleTodo }) => {
           title={TODOS_CONST.ADD_NEW_TASK}
           onPress={() => {
             console.log("add new");
-            navigation.navigate(ROUTE_CONT.EDITTODO);
+            // navigation.navigate(ROUTE_CONT.EDITTODO);
+              navigation.navigate(ROUTE_CONT.EDITTODO,{editMode : false,id:'',title:"",desc:""});
           }}
         />
       </View>

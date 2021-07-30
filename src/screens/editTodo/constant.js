@@ -6,4 +6,5 @@ export const EDIT_TODO_CONST = {
   DESC_SMALL: "description",
   SAVE: "Save",
   ADD_NEW_TASK: "Add new task",
+  EDIT_TASK: "Edit task",
 };

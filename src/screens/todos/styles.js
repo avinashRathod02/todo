@@ -15,7 +15,7 @@ export const TODOS_STYLES = StyleSheet.create({
     flex: 0.9,
     borderWidth: 1,
     borderColor: COLOR_CONT.TRANSPARENT,
-    color: COLOR_CONT.GRAY,
+    color: COLOR_CONT.GREEN,
     fontSize: 15,
   },
   titleText: {

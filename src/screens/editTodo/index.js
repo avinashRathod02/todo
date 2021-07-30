@@ -6,30 +6,28 @@ import {
   StyleSheet,
   TextInput,
   StatusBar,
+  Alert,
 } from "react-native";
 import { connect } from "react-redux";
-import { addTodo } from "../../actions";
+import * as action from "../../actions/index";
 import store from "../../store";
 import { EDIT_TODO_STYLES } from "./styles";
 import { EDIT_TODO_CONST } from "./constant";
 import { COLOR_CONT } from "../../constants/colors";
 import { ROUTE_CONT } from "../../constants/routes";
-import { Field } from "redux-form";
+import { reduxForm } from "redux-form";
 import InputField from "../../components/InputField/index.js";
 import AddForm from "../../components/addForm/AddForm";
 class Add extends React.Component {
-  state = {
-    title: "",
-    desc: "",
-  };
-
   addTodo = (title, desc) => {
     this.props.dispatch({ type: "ADD_TODO", title, desc });
-    this.setState({ title: "", desc: "" });
+  };
+  editTodo = (title, desc) => {
+    this.props.dispatch({ type: "ADD_TODO", title, desc });
   };
   render() {
     const { navigation } = this.props;
-    const { title, desc } = this.state;
+    const { id, editMode } = this.props.route.params;
     return (
       <View style={EDIT_TODO_STYLES.container}>
         <View style={EDIT_TODO_STYLES.backView}>
@@ -42,7 +40,9 @@ class Add extends React.Component {
             }}
           />
         </View>
-        <Text>{EDIT_TODO_CONST.ADD_NEW_TASK}</Text>
+        <Text style={EDIT_TODO_STYLES.headerText}>
+          {editMode ? EDIT_TODO_CONST.EDIT_TASK : EDIT_TODO_CONST.ADD_NEW_TASK}
+        </Text>
         {/* <TextInput
           onChangeText={(title) => this.setState({ title })}
           value={title}
@@ -69,8 +69,15 @@ class Add extends React.Component {
           }}
         /> */}
         <AddForm
-          onSubmit={(data) => {
-            console.log(data);
+          onSubmit={(values) => {
+            console.log(values);
+            console.log(editMode);
+            if (editMode) {
+              store.dispatch(action.editTodo(id, values.title, values.desc));
+            } else {
+              store.dispatch(action.addTodo(values.title, values.desc));
+            }
+            navigation.navigate(ROUTE_CONT.TODOS);
           }}
         />
       </View>
@@ -78,4 +85,6 @@ class Add extends React.Component {
   }
 }
 
-export default connect()(Add);
+export default reduxForm({
+  form: "signIn",
+})(Add);
