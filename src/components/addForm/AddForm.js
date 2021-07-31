@@ -6,6 +6,7 @@ import { ADD_FORM_STYLES } from "./styles";
 import { ADD_FORM_CONST } from "./constant";
 import { COLOR_CONT } from "../../constants/colors";
 import { validate } from "./validation";
+import { COMMAN_CONST } from "../../constants/comman";
 
 class AddForm extends React.Component {
   render() {
@@ -54,6 +55,6 @@ class AddForm extends React.Component {
 }
 
 export default reduxForm({
-  form: "signIn",
+  form: COMMAN_CONST.TODO_FORM,
   validate,
 })(AddForm);

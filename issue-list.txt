@@ -1,4 +1,3 @@
 
-=>  Add redux-form in add/edit todo form instead of using normal states.
-
-=>  Add required validation through redux-form in title and description field.
+reselect
+react-saga

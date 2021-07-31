@@ -8,12 +8,14 @@ export const EDIT_TODO_STYLES = StyleSheet.create({
     alignItems: "center",
     // justifyContent: "center",
   },
+  keyboardView: { width: "80%", height: "100%" },
   headerText: {
-    flex: 1,
+    alignSelf: "center",
     borderWidth: 1,
     borderColor: COLOR_CONT.TRANSPARENT,
     color: COLOR_CONT.WHITE,
     fontSize: 20,
+    padding: 20,
   },
   title: {
     borderWidth: 0.1,

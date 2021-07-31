@@ -2,7 +2,7 @@ import { ACTION_CONT } from "../constants/actions";
 
 let nextId = 0;
 const todos = (state = [], action) => {
-  console.log(action);
+  // console.log(state);
   switch (action.type) {
     case ACTION_CONT.ADD_TODO:
       return [
