@@ -20,7 +20,7 @@ export default function InputField(props) {
           onChangeText={input.onChange}
           onBlur={input.onBlur}
           onFocus={input.onFocus}
-          // value={input.value}
+          value={input.value}
           style={INPUT_STYLES.input}
         />
       </View>

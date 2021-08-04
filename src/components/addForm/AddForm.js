@@ -1,5 +1,5 @@
 import React from "react";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, change } from "redux-form";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import InputField from "../InputField";
 import { ADD_FORM_STYLES } from "./styles";
@@ -9,6 +9,17 @@ import { validate } from "./validation";
 import { COMMAN_CONST } from "../../constants/comman";
 
 class AddForm extends React.Component {
+     componentWillUpdate() {
+        const { editMode, title, desc } = this.props._reduxForm.route.params;
+        if (editMode) {
+          this.props.dispatch(
+            change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
+          );
+          this.props.dispatch(
+            change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.DESC_SMALL, desc)
+          );
+        }
+    }
   render() {
     const { handleSubmit } = this.props;
     const { editMode, title, desc } = this.props._reduxForm.route.params;
@@ -27,7 +38,7 @@ class AddForm extends React.Component {
           placeholder={editMode ? title : ADD_FORM_CONST.TITLE}
           multiline={true}
           numberOfLines={1}
-          defaultValue={title}
+          // defaultValue={title}
           placeholderTextColor={COLOR_CONT.GRAY}
         />
         <Text style={ADD_FORM_STYLES.titleText}>{ADD_FORM_CONST.DESC}</Text>
@@ -37,7 +48,7 @@ class AddForm extends React.Component {
           placeholder={editMode ? desc : ADD_FORM_CONST.DESC}
           multiline={true}
           numberOfLines={4}
-          defaultValue={desc}
+          // defaultValue={desc}
           placeholderTextColor={COLOR_CONT.GRAY}
         />
         <TouchableOpacity

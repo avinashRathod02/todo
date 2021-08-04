@@ -17,6 +17,9 @@ import { ROUTE_CONT } from "../../constants/routes";
 import { TODOS_CONST } from "./constant";
 import { ACTION_CONT } from "../../constants/actions";
 import store from "../../store";
+import {createSelector} from "reselect"
+import axios from "axios";
+import { COMMAN_CONST } from "../../constants/comman";
 
 const ListItems = (item, index) => {
   // console.log(item.item);
@@ -27,7 +30,7 @@ const ListItems = (item, index) => {
           numberOfLines={1}
           style={[
             TODOS_STYLES.titleText,
-            item.item.completed ? { textDecorationLine: "line-through" } : {},
+            // item.item.completed ? { textDecorationLine: "line-through" } : {},
           ]}
         >
           {item.item.title}
@@ -36,14 +39,14 @@ const ListItems = (item, index) => {
           {item.item.desc}
         </Text>
       </View>
-      <Button
+      {/* <Button
         color={COLOR_CONT.BLACK}
         title={TODOS_CONST.COMPLETE}
         onPress={() => {
           console.log("delete button pressed " + item.index);
           store.dispatch(action.toggleTodo(item.item.id));
         }}
-      />
+      /> */}
       <Button
         color={COLOR_CONT.BLACK}
         title={TODOS_CONST.EDIT}
@@ -63,6 +66,16 @@ const ListItems = (item, index) => {
   );
 };
 const TodoList = ({ todos, toggleTodo }) => {
+  axios.get(COMMAN_CONST.BASEURL)
+  .then(function (response) {
+    console.log(response.data.todos);
+    console.log(todos);
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+  });
   return (
     <View style={TODOS_STYLES.container}>
       <View style={TODOS_STYLES.addNewView}>
@@ -86,9 +99,13 @@ const TodoList = ({ todos, toggleTodo }) => {
     </View>
   );
 };
-const mapStateToProps = (state) => ({
+const todoSelector = (state) => ({
   todos: state.todos,
 });
+const mapStateToProps = createSelector(
+  todoSelector,
+  (todos) => (todos)
+)
 const mapDispatchToProps = (dispatch) => ({
   toggleTodo: (id) => dispatch(action.toggleTodo(id)),
 });
