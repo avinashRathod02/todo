@@ -5,4 +5,8 @@ export const TODOS_CONST = {
   DELETE: "❌",
   COMPLETE: "✅",
   ADD_NEW_TASK: "+ Add new task",
+  WARNING: "Warning",
+  WARNING_MSG: "You want to delete this task ?",
+  CANCEL: "Cancel",
+  OK: "ok",
 };

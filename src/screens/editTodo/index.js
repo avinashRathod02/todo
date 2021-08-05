@@ -21,11 +21,11 @@ import InputField from "../../components/InputField/index.js";
 import AddForm from "../../components/addForm/AddForm";
 import { COMMAN_CONST } from "../../constants/comman";
 class Add extends React.Component {
-  addTodo = (title, desc) => {
-    this.props.dispatch({ type: "ADD_TODO", title, desc });
+  addTodo = (title, description) => {
+    this.props.dispatch({ type: "ADD_TODO", title, description });
   };
-  editTodo = (title, desc) => {
-    this.props.dispatch({ type: "ADD_TODO", title, desc });
+  editTodo = (title, description) => {
+    this.props.dispatch({ type: "ADD_TODO", title, description });
   };
   render() {
     const keyboardVerticalOffset = Platform.OS != "ios" ? -580 : 0;
@@ -66,16 +66,16 @@ class Add extends React.Component {
         placeholder={EDIT_TODO_CONST.TITLE}
         /> */}
           {/* <TextInput
-          onChangeText={(desc) => this.setState({ desc })}
-          value={desc}
-          style={EDIT_TODO_STYLES.desc}
+          onChangeText={(description) => this.setState({ description })}
+          value={description}
+          style={EDIT_TODO_STYLES.description}
           placeholder={EDIT_TODO_CONST.DESC}
         />
         <Button
           title={EDIT_TODO_CONST.SAVE}
           color={COLOR_CONT.GREEN}
           onPress={() => {
-            this.addTodo(title, desc);
+            this.addTodo(title, description);
             navigation.navigate(ROUTE_CONT.TODOS);
           }}
         /> */}
@@ -83,9 +83,13 @@ class Add extends React.Component {
             onSubmit={(values) => {
               console.log(values);
               if (editMode) {
-                store.dispatch(action.editTodo(id, values.title, values.desc));
+                store.dispatch(
+                  action.editTodo(id, values.title, values.description)
+                );
               } else {
-                store.dispatch(action.addTodo(values.title, values.desc));
+                store.dispatch(
+                  action.addTodo(values.title, values.description)
+                );
               }
               navigation.navigate(ROUTE_CONT.TODOS);
             }}

@@ -1,16 +1,14 @@
-import axios from "axios";
-import { createStore } from "redux";
-import { COMMAN_CONST } from "../constants/comman";
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from "../reducers";
-axios.get(COMMAN_CONST.BASEURL)
-  .then(function (response) {
-    console.log(response.data.todos);
-    // console.log(todos);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-  .then(function () {
-  });
-const store = createStore(rootReducer);
+import rootSaga from "../saga";
+import { logger } from 'redux-logger';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+   rootReducer,
+   applyMiddleware(sagaMiddleware, logger),
+);
+sagaMiddleware.run(rootSaga);
 export default store;

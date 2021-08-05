@@ -3,7 +3,7 @@ export const ADD_FORM_CONST = {
   TITLE: "Title",
   TITLE_SMALL: "title",
   DESC: "Description",
-  DESC_SMALL: "desc",
+  DESC_SMALL: "description",
   ADD: "Add",
   EDIT: "Edit",
   ADD_NEW_TASK: "Add new task",

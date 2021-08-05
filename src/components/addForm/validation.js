@@ -3,15 +3,15 @@ import { ADD_FORM_CONST } from "./constant";
 export const validate = (values) => {
   const error = {};
   error.title = "";
-  error.desc = "";
+  error.description = "";
 
   var titleValue = values.title;
-  var descValue = values.desc;
+  var descValue = values.description;
 
   if (values.title === undefined) {
     titleValue = "";
   }
-  if (values.desc === undefined) {
+  if (values.description === undefined) {
     descValue = "";
   }
 
@@ -19,7 +19,7 @@ export const validate = (values) => {
     error.title = ADD_FORM_CONST.REQ_ERROR_TITLE;
   }
   if (descValue.length < 1) {
-    error.desc = ADD_FORM_CONST.REQ_ERROR_DESC;
+    error.description = ADD_FORM_CONST.REQ_ERROR_DESC;
   }
   return error;
 };

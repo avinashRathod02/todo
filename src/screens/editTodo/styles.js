@@ -25,7 +25,7 @@ export const EDIT_TODO_STYLES = StyleSheet.create({
     width: "50%",
     marginTop: 50,
   },
-  desc: {
+  description: {
     borderWidth: 0.1,
     borderBottomWidth: 1,
     borderBottomColor: COLOR_CONT.BLACK,
