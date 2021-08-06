@@ -1,5 +1,16 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "search.quickOpen.history.filterSortOrder": "recency",
+  "bracketPairColorizer.activeScopeCSS": [
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}; opacity: 0.5"
+  ],
+  "bracketPairColorizer.independentPairColors": [
+    ["()", ["blue"], "Red"],
+    ["[]", ["green"], "Red"],
+    ["{}", ["white"], "Red"]
+  ]
 }

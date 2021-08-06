@@ -16,11 +16,50 @@ import { EDIT_TODO_STYLES } from "./styles";
 import { EDIT_TODO_CONST } from "./constant";
 import { COLOR_CONT } from "../../constants/colors";
 import { ROUTE_CONT } from "../../constants/routes";
-import { reduxForm } from "redux-form";
+import { reduxForm, change } from "redux-form";
 import InputField from "../../components/InputField/index.js";
 import AddForm from "../../components/addForm/AddForm";
 import { COMMAN_CONST } from "../../constants/comman";
+import SimpleLoader from "../../components/loading/simpleLoader";
+import axios from "axios";
+import { ADD_FORM_CONST } from "../../components/addForm/constant";
 class Add extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isLoaded: false };
+  }
+  componentDidMount() {
+    const { editMode, id } = this.props.route.params;
+    if (editMode) {
+      try {
+        console.error(id + "__");
+        axios
+          .get(COMMAN_CONST.BASEURL + id)
+          .then((response) => {
+            console.error(response.data.todo);
+            const title = response.data.todo.title;
+            const description = response.data.todo.description;
+            this.props.dispatch(
+              change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
+            );
+            this.props.dispatch(
+              change(
+                COMMAN_CONST.TODO_FORM,
+                ADD_FORM_CONST.DESC_SMALL,
+                description
+              )
+            );
+            this.setState({ isLoaded: true });
+          })
+          .catch((error) => console.error(error));
+      } catch (error) {
+        this.setState({ isLoaded: true });
+      }
+    } else {
+      this.setState({ isLoaded: true });
+    }
+  }
+
   addTodo = (title, description) => {
     this.props.dispatch({ type: "ADD_TODO", title, description });
   };
@@ -29,7 +68,7 @@ class Add extends React.Component {
   };
   render() {
     const keyboardVerticalOffset = Platform.OS != "ios" ? -580 : 0;
-
+    const { isLoaded } = this.state;
     const { navigation } = this.props;
     const { id, editMode } = this.props.route.params;
     return (
@@ -39,7 +78,6 @@ class Add extends React.Component {
             title={EDIT_TODO_CONST.BACK_BUTTON}
             color={COLOR_CONT.GRAY}
             onPress={() => {
-              console.log("save button called");
               navigation.navigate(ROUTE_CONT.TODOS);
             }}
           />
@@ -54,46 +92,24 @@ class Add extends React.Component {
               ? EDIT_TODO_CONST.EDIT_TASK
               : EDIT_TODO_CONST.ADD_NEW_TASK}
           </Text>
-          {/* <TextInput
-          onChangeText={(title) => this.setState({ title })}
-          value={title}
-          style={EDIT_TODO_STYLES.title}
-          placeholder={EDIT_TODO_CONST.TITLE}
-        /> */}
-          {/* <Field name={EDIT_TODO_CONST.TITLE_SMALL} 
-        component={InputField}
-        style={EDIT_TODO_STYLES.title}
-        placeholder={EDIT_TODO_CONST.TITLE}
-        /> */}
-          {/* <TextInput
-          onChangeText={(description) => this.setState({ description })}
-          value={description}
-          style={EDIT_TODO_STYLES.description}
-          placeholder={EDIT_TODO_CONST.DESC}
-        />
-        <Button
-          title={EDIT_TODO_CONST.SAVE}
-          color={COLOR_CONT.GREEN}
-          onPress={() => {
-            this.addTodo(title, description);
-            navigation.navigate(ROUTE_CONT.TODOS);
-          }}
-        /> */}
-          <AddForm
-            onSubmit={(values) => {
-              console.log(values);
-              if (editMode) {
-                store.dispatch(
-                  action.editTodo(id, values.title, values.description)
-                );
-              } else {
-                store.dispatch(
-                  action.addTodo(values.title, values.description)
-                );
-              }
-              navigation.navigate(ROUTE_CONT.TODOS);
-            }}
-          />
+          {isLoaded ? (
+            <AddForm
+              onSubmit={(values) => {
+                if (editMode) {
+                  store.dispatch(
+                    action.editTodo(id, values.title, values.description)
+                  );
+                } else {
+                  store.dispatch(
+                    action.addTodo(values.title, values.description)
+                  );
+                }
+                navigation.navigate(ROUTE_CONT.TODOS);
+              }}
+            />
+          ) : (
+            <SimpleLoader />
+          )}
         </KeyboardAvoidingView>
       </View>
     );

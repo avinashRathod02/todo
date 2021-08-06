@@ -10,24 +10,10 @@ import { COMMAN_CONST } from "../../constants/comman";
 import axios from "axios";
 
 class AddForm extends React.Component {
-  componentWillUpdate() {
-    const { editMode, id } = this.props._reduxForm.route.params;
-    axios.get(COMMAN_CONST.BASEURL + id).then((response) => {
-      const title = response.data.todo.title;
-      const description = response.data.todo.description;
-      if (editMode) {
-        this.props.dispatch(
-          change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
-        );
-        this.props.dispatch(
-          change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.DESC_SMALL, description)
-        );
-      }
-    });
-  }
   render() {
+    const editMode = this.props._reduxForm.route.params.editMode;
+    // const id = this.props._reduxForm.route.params.id;
     const { handleSubmit } = this.props;
-    const { editMode, title, description } = this.props._reduxForm.route.params;
     return (
       <ScrollView
         style={ADD_FORM_STYLES.container}
@@ -40,7 +26,7 @@ class AddForm extends React.Component {
         <Field
           name={ADD_FORM_CONST.TITLE_SMALL}
           component={InputField}
-          placeholder={editMode ? title : ADD_FORM_CONST.TITLE}
+          placeholder={ADD_FORM_CONST.TITLE}
           multiline={true}
           numberOfLines={1}
           // defaultValue={title}
@@ -50,7 +36,7 @@ class AddForm extends React.Component {
         <Field
           name={ADD_FORM_CONST.DESC_SMALL}
           component={InputField}
-          placeholder={editMode ? description : ADD_FORM_CONST.DESC}
+          placeholder={ADD_FORM_CONST.DESC}
           multiline={true}
           numberOfLines={4}
           // defaultValue={description}

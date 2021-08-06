@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   FlatList,
@@ -8,6 +8,7 @@ import {
   View,
   StatusBar,
   Alert,
+  RefreshControl,
 } from "react-native";
 import { connect } from "react-redux";
 import * as action from "../../actions/index";
@@ -37,7 +38,7 @@ const ListItems = (item, index) => {
       },
     ]);
   return (
-    <View key={index} style={TODOS_STYLES.itemContainer}>
+    <View style={TODOS_STYLES.itemContainer}>
       <View style={TODOS_STYLES.textView}>
         <Text
           numberOfLines={1}
@@ -84,10 +85,19 @@ const ListItems = (item, index) => {
   );
 };
 const TodoList = ({ todos, toggleTodo }) => {
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     store.dispatch(action.getTodos());
   }, []);
-  // console.log(todos);
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      store.dispatch(action.getTodos());
+      setRefreshing(false);
+    } catch (error) {
+      setRefreshing(false);
+    }
+  }, [refreshing]);
   return (
     <View style={TODOS_STYLES.container}>
       <View style={TODOS_STYLES.addNewView}>
@@ -106,13 +116,17 @@ const TodoList = ({ todos, toggleTodo }) => {
         />
       </View>
       <Loading />
-      <ScrollView style={TODOS_STYLES.scrollView}>
-        <FlatList
-          style={TODOS_STYLES.flatlist}
-          data={todos}
-          renderItem={ListItems}
-        />
-      </ScrollView>
+      {/* <ScrollView style={TODOS_STYLES.scrollView}> */}
+      <FlatList
+        style={TODOS_STYLES.flatlist}
+        data={todos}
+        renderItem={ListItems}
+        keyExtractor={(item, index) => index.toString()}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
+      {/* </ScrollView> */}
     </View>
   );
 };

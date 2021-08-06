@@ -4,15 +4,19 @@ import { ACTION_CONT } from "../constants/actions";
 import { COMMAN_CONST } from "../constants/comman";
 
 function* fetchTodos() {
-  const json = yield axios
-    .get(COMMAN_CONST.BASEURL)
-    .then((response) => {
-      return response.data.todos;
-    })
-    .catch(function (error) {
-      console.log("error");
-    });
-  yield put({ type: ACTION_CONT.RECEIVED_TODOS_LIST, json: json });
+  try {
+    const json = yield axios
+      .get(COMMAN_CONST.BASEURL)
+      .then((response) => {
+        return response.data.todos;
+      })
+      .catch(function (error) {
+        console.log("error");
+      });
+    yield put({ type: ACTION_CONT.RECEIVED_TODOS_LIST, json: json });
+  } catch (error) {
+    console.log(error);
+  }
 }
 function* fetchTodo(todo) {
   yield axios
@@ -31,6 +35,7 @@ function* add(todo) {
     url,
   };
   yield axios(options);
+  yield fetchTodos();
 }
 function* edit(todo) {
   const url = COMMAN_CONST.BASEURL + todo.id;

@@ -37,23 +37,8 @@ const todos = (state = [], action) => {
     case ACTION_CONT.EDIT_TODO:
       // return {...state , todos :[ ...state.todos , {
       // }]}
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === action.id
-            ? {
-                id: action.id,
-                title: action.title,
-                description: action.description,
-                completed: todo.completed,
-              }
-            : todo
-        ),
-      };
+      return state;
     case ACTION_CONT.DELETE_TODO:
-      console.log("state");
-      console.log(state);
-      console.log("state");
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.id),
