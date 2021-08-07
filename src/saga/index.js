@@ -6,7 +6,7 @@ import { COMMAN_CONST } from "../constants/comman";
 function* getTodosList({ payload }) {
   try {
     const json = yield axios
-      .get(COMMAN_CONST.BASEURL + `?search=${payload.text}`)
+      .get(COMMAN_CONST.BASEURL + `?search=${payload.searchText}`)
       .then((response) => {
         return response.data.todos;
       })

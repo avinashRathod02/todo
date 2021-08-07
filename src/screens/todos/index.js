@@ -27,6 +27,7 @@ import { COMMAN_CONST } from "../../constants/comman";
 import { debounce } from "lodash";
 import { Input } from "react-native-elements/dist/input/Input";
 import SimpleLoader from "../../components/loading/simpleLoader";
+import styled from "styled-components";
 
 const ListItems = (item, index) => {
   const deleteAlert = () =>
@@ -77,11 +78,25 @@ const ListItems = (item, index) => {
     </View>
   );
 };
+const SearchView = styled(View)`
+  width: 300;
+  background: green;
+`;
+
+const SearchInput = styled(TextInput)`
+  width: 90%;
+  background: #fff;
+  z-index: 1;
+  height: 50px;
+  border: 0;
+  color: blue;
+  font-size: 20;
+`;
 const TodoList = ({ todos, toggleTodo }) => {
   const [refreshing, setRefreshing] = useState(false);
   const keyboardVerticalOffset = Platform.OS != "ios" ? -580 : 0;
   const onChangeTextDelayed = debounce(
-    (text) => store.dispatch(action.searchInTodo(text)),
+    (searchText) => store.dispatch(action.searchInTodo(searchText)),
     700
   );
   useEffect(() => {
@@ -98,15 +113,15 @@ const TodoList = ({ todos, toggleTodo }) => {
   }, [refreshing]);
   return (
     <View style={TODOS_STYLES.container}>
-      <View style={TODOS_STYLES.addNewView}>
-        <TextInput
+      <SearchView>
+        <SearchInput
           placeholder={TODOS_CONST.SEARCH}
           placeholderTextColor={COLOR_CONT.GRAY}
           clearButtonMode="always"
           onChangeText={onChangeTextDelayed}
-          style={TODOS_STYLES.searchInput}
+          // style={TODOS_STYLES.searchInput}
         />
-      </View>
+      </SearchView>
       {todos.loading ? (
         <SimpleLoader />
       ) : (

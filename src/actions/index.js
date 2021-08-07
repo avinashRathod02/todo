@@ -1,15 +1,15 @@
 import { ACTION_CONT } from "../constants/actions";
 let nextId = 0;
-export const searchInTodo = (text) => ({
+export const searchInTodo = (searchText) => ({
   type: ACTION_CONT.SEARCH_IN_TODO,
   payload: {
-    text,
+    searchText,
   },
 });
 export const getTodos = () => ({
   type: ACTION_CONT.GET_TODOS_LIST,
   payload: {
-    text: "",
+    searchText: "",
   },
 });
 export const addTodo = (title, description) => ({
