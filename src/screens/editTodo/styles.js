@@ -17,6 +17,12 @@ export const EDIT_TODO_STYLES = StyleSheet.create({
     fontSize: 20,
     padding: 20,
   },
+  createDateText: {
+    alignSelf: "center",
+    borderColor: COLOR_CONT.TRANSPARENT,
+    color: COLOR_CONT.GRAY,
+    fontSize: 15,
+  },
   title: {
     borderWidth: 0.1,
     borderBottomWidth: 1,

@@ -5,6 +5,7 @@ export const INPUT_STYLES = StyleSheet.create({
   input: {
     padding: 5,
     color: COLOR_CONT.WHITE,
+    maxHeight: 50,
   },
   inputContainer: {
     borderBottomWidth: 1,

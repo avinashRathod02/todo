@@ -18,4 +18,10 @@ export const ADD_FORM_STYLES = StyleSheet.create({
     width: "50%",
     textAlign: "center",
   },
+  switchLabel: {
+    alignSelf: "flex-start",
+    fontWeight: "bold",
+    fontSize: 15,
+    color: COLOR_CONT.WHITE,
+  },
 });

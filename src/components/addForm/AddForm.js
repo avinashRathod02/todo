@@ -1,6 +1,14 @@
 import React from "react";
 import { reduxForm, Field, change } from "redux-form";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  CheckBox,
+  Switch,
+  TextInput,
+} from "react-native";
 import InputField from "../InputField";
 import { ADD_FORM_STYLES } from "./styles";
 import { ADD_FORM_CONST } from "./constant";
@@ -8,12 +16,22 @@ import { COLOR_CONT } from "../../constants/colors";
 import { validate } from "./validation";
 import { COMMAN_CONST } from "../../constants/comman";
 import axios from "axios";
+// import ToggleSwitch from "toggle-switch-react-native";
+import ToggleSwitch from "../toggle";
+// import { Switch } from "react-native-gesture-handler";
 
 class AddForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isEnabled: true };
+  }
+  toggleSwitch() {
+    this.setState({ isEnabled: !this.isEnabled });
+  }
   render() {
     const editMode = this.props._reduxForm.route.params.editMode;
     // const id = this.props._reduxForm.route.params.id;
-    const { handleSubmit } = this.props;
+    const { handleSubmit, isEnabled } = this.props;
     return (
       <ScrollView
         style={ADD_FORM_STYLES.container}
@@ -42,6 +60,29 @@ class AddForm extends React.Component {
           // defaultValue={description}
           placeholderTextColor={COLOR_CONT.GRAY}
         />
+        {editMode && (
+          <View
+            style={{
+              flex: 1,
+              height: 30,
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.15 }}>
+              <Field
+                name={ADD_FORM_CONST.SWITCH}
+                component={ToggleSwitch}
+                onValueChange={(value) => {
+                  this.setState({ isEnabled: !isEnabled });
+                }}
+                value={isEnabled}
+              />
+            </View>
+            <View style={{ flex: 0.85, justifyContent: "center" }}>
+              <Text style={ADD_FORM_STYLES.switchLabel}>{" Completed"}</Text>
+            </View>
+          </View>
+        )}
         <TouchableOpacity
           onPress={() => {
             handleSubmit();

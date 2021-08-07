@@ -33,12 +33,13 @@ export const deleteTodo = (id) => ({
     id,
   },
 });
-export const editTodo = (id, title, description) => ({
+export const editTodo = (id, title, description, is_completed) => ({
   type: ACTION_CONT.EDIT_TODO,
   payload: {
     id,
     title,
     description,
+    is_completed,
   },
 });
 export const selectTodo = (id) => ({

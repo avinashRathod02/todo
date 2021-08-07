@@ -42,13 +42,14 @@ function* addTodo({ payload }) {
     url,
   };
   yield axios(options);
-  yield fetchTodos();
+  yield put({ type: ACTION_CONT.GET_TODOS_LIST, payload: { text: "" } });
 }
 function* editTodo({ payload }) {
   const url = COMMAN_CONST.BASEURL + `/${payload.id}`;
   const data = {
     title: payload.title,
     description: payload.description,
+    is_completed: payload.is_completed,
   };
   const options = {
     method: "PUT",
@@ -56,7 +57,7 @@ function* editTodo({ payload }) {
     url,
   };
   yield axios(options);
-  yield put({ type: ACTION_CONT.GET_TODOS_LIST });
+  yield put({ type: ACTION_CONT.GET_TODOS_LIST, payload: { text: "" } });
 }
 
 export default function* rootSaga() {

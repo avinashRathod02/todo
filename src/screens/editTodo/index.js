@@ -23,11 +23,12 @@ import AddForm from "../../components/addForm/AddForm";
 import { COMMAN_CONST } from "../../constants/comman";
 import SimpleLoader from "../../components/loading/simpleLoader";
 import axios from "axios";
+import moment from "moment";
 import { ADD_FORM_CONST } from "../../components/addForm/constant";
 class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoaded: false };
+    this.state = { isLoaded: false, CreateTododDate: "", isEnabled: false };
   }
   componentDidMount() {
     const { editMode, id } = this.props.route.params;
@@ -36,6 +37,15 @@ class Add extends React.Component {
         axios.get(COMMAN_CONST.BASEURL + `/ ${id}`).then((response) => {
           const title = response.data.todo.title;
           const description = response.data.todo.description;
+          const is_completed =
+            response.data.todo.is_completed === 1 ? true : false;
+          this.setState({
+            CreateTododDate:
+              EDIT_TODO_CONST.CREATED_DATE +
+              moment(response.data.todo.created_at).format(
+                COMMAN_CONST.CREATED_DATE_FORMAT
+              ),
+          });
           this.props.dispatch(
             change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
           );
@@ -45,6 +55,9 @@ class Add extends React.Component {
               ADD_FORM_CONST.DESC_SMALL,
               description
             )
+          );
+          this.props.dispatch(
+            change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.SWITCH, is_completed)
           );
           this.setState({ isLoaded: true });
         });
@@ -56,15 +69,9 @@ class Add extends React.Component {
     }
   }
 
-  addTodo = (title, description) => {
-    this.props.dispatch({ type: "ADD_TODO", title, description });
-  };
-  editTodo = (title, description) => {
-    this.props.dispatch({ type: "ADD_TODO", title, description });
-  };
   render() {
     const keyboardVerticalOffset = Platform.OS != "ios" ? -580 : 0;
-    const { isLoaded } = this.state;
+    const { isLoaded, CreateTododDate } = this.state;
     const { navigation } = this.props;
     const { id, editMode } = this.props.route.params;
     return (
@@ -88,12 +95,18 @@ class Add extends React.Component {
               ? EDIT_TODO_CONST.EDIT_TASK
               : EDIT_TODO_CONST.ADD_NEW_TASK}
           </Text>
+          <Text style={EDIT_TODO_STYLES.createDateText}>{CreateTododDate}</Text>
           {isLoaded ? (
             <AddForm
               onSubmit={(values) => {
                 if (editMode) {
                   store.dispatch(
-                    action.editTodo(id, values.title, values.description)
+                    action.editTodo(
+                      id,
+                      values.title,
+                      values.description,
+                      values.switch
+                    )
                   );
                 } else {
                   store.dispatch(

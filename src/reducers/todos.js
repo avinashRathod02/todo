@@ -8,18 +8,7 @@ const todos = (state = { todos: [], loading: false }, action) => {
     case ACTION_CONT.RECEIVED_TODOS_LIST:
       return { todos: action.payload.json, loading: false };
     case ACTION_CONT.ADD_TODO:
-      return {
-        ...state,
-        todos: [
-          ...state.todos,
-          {
-            id: nextId++,
-            title: action.payload.title,
-            description: action.payload.description,
-            completed: false,
-          },
-        ],
-      };
+      return state;
     case ACTION_CONT.TOGGLE_TODO:
       return state.map((todo) =>
         todo.id === action.payload.id

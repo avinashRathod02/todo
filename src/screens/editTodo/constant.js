@@ -7,4 +7,5 @@ export const EDIT_TODO_CONST = {
   SAVE: "Save",
   ADD_NEW_TASK: "Add new task",
   EDIT_TASK: "Edit task",
+  CREATED_DATE: "This task is created ",
 };
