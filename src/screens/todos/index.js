@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   FlatList,
@@ -9,6 +9,8 @@ import {
   StatusBar,
   Alert,
   RefreshControl,
+  Platform,
+  TextInput,
 } from "react-native";
 import { connect } from "react-redux";
 import * as action from "../../actions/index";
@@ -22,7 +24,9 @@ import store from "../../store";
 import { createSelector } from "reselect";
 import axios from "axios";
 import { COMMAN_CONST } from "../../constants/comman";
-import Loading from "../../components/loading";
+import { debounce } from "lodash";
+import { Input } from "react-native-elements/dist/input/Input";
+import SimpleLoader from "../../components/loading/simpleLoader";
 
 const ListItems = (item, index) => {
   const deleteAlert = () =>
@@ -53,24 +57,13 @@ const ListItems = (item, index) => {
           {item.item.description}
         </Text>
       </View>
-      {/* <Button
-        color={COLOR_CONT.BLACK}
-        title={TODOS_CONST.COMPLETE}
-        onPress={() => {
-          console.log("delete button pressed " + item.index);
-          store.dispatch(action.toggleTodo(item.item.id));
-        }}
-      /> */}
       <Button
         color={COLOR_CONT.BLACK}
         title={TODOS_CONST.EDIT}
         onPress={() => {
-          // const todoData = store.dispatch(action.selectTodo(item.item.id));
           navigation.navigate(ROUTE_CONT.EDITTODO, {
             editMode: true,
             id: item.item.id,
-            // title: item.item.title,
-            // description: item.item.description,
           });
         }}
       />
@@ -86,6 +79,11 @@ const ListItems = (item, index) => {
 };
 const TodoList = ({ todos, toggleTodo }) => {
   const [refreshing, setRefreshing] = useState(false);
+  const keyboardVerticalOffset = Platform.OS != "ios" ? -580 : 0;
+  const onChangeTextDelayed = debounce(
+    (text) => store.dispatch(action.searchInTodo(text)),
+    700
+  );
   useEffect(() => {
     store.dispatch(action.getTodos());
   }, []);
@@ -101,39 +99,56 @@ const TodoList = ({ todos, toggleTodo }) => {
   return (
     <View style={TODOS_STYLES.container}>
       <View style={TODOS_STYLES.addNewView}>
+        <TextInput
+          placeholder={TODOS_CONST.SEARCH}
+          placeholderTextColor={COLOR_CONT.GRAY}
+          clearButtonMode="always"
+          onChangeText={onChangeTextDelayed}
+          style={TODOS_STYLES.searchInput}
+        />
+      </View>
+      {todos.loading ? (
+        <SimpleLoader />
+      ) : (
+        <View style={TODOS_STYLES.flex1}>
+          {todos.todos.length > 0 ? (
+            <FlatList
+              keyboardDismissMode="on-drag"
+              keyboardShouldPersistTaps="handled"
+              style={TODOS_STYLES.flatlist}
+              data={todos.todos}
+              renderItem={ListItems}
+              keyExtractor={(item, index) => index.toString()}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            />
+          ) : (
+            <Text style={TODOS_STYLES.titleText}>No Todo found..!</Text>
+          )}
+        </View>
+      )}
+      <View style={TODOS_STYLES.addNewView}>
         <Button
           color={COLOR_CONT.GRAY}
           title={TODOS_CONST.ADD_NEW_TASK}
           onPress={() => {
-            // navigation.navigate(ROUTE_CONT.EDITTODO);
             navigation.navigate(ROUTE_CONT.EDITTODO, {
               editMode: false,
               id: "",
-              title: "",
-              description: "",
             });
           }}
         />
       </View>
-      <Loading />
-      {/* <ScrollView style={TODOS_STYLES.scrollView}> */}
-      <FlatList
-        style={TODOS_STYLES.flatlist}
-        data={todos}
-        renderItem={ListItems}
-        keyExtractor={(item, index) => index.toString()}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-      {/* </ScrollView> */}
     </View>
   );
 };
 const todoSelector = (state) => ({
   todos: state.todos,
 });
-const mapStateToProps = createSelector(todoSelector, (state) => state.todos);
+const mapStateToProps = createSelector(todoSelector, (state) => ({
+  todos: state.todos,
+}));
 const mapDispatchToProps = (dispatch) => ({
   toggleTodo: (id) => dispatch(action.toggleTodo(id)),
 });

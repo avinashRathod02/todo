@@ -3,31 +3,38 @@ import { put, takeLatest, all, takeEvery } from "redux-saga/effects";
 import { ACTION_CONT } from "../constants/actions";
 import { COMMAN_CONST } from "../constants/comman";
 
-function* fetchTodos() {
+function* getTodosList({ payload }) {
   try {
     const json = yield axios
-      .get(COMMAN_CONST.BASEURL)
+      .get(COMMAN_CONST.BASEURL + `?search=${payload.text}`)
       .then((response) => {
         return response.data.todos;
       })
-      .catch(function (error) {
-        console.log("error");
-      });
-    yield put({ type: ACTION_CONT.RECEIVED_TODOS_LIST, json: json });
-  } catch (error) {
-    console.log(error);
-  }
+      .catch(function (error) {});
+    yield put({
+      type: ACTION_CONT.RECEIVED_TODOS_LIST,
+      payload: { json: json },
+    });
+  } catch (error) {}
 }
-function* fetchTodo(todo) {
+function* deleteTodo({ payload }) {
   yield axios
-    .get(COMMAN_CONST.BASEURL + todo.id)
+    .delete(COMMAN_CONST.BASEURL + `/${payload.id}`)
+    .then((response) => {
+      return response.data.todos;
+    })
+    .catch(function (error) {});
+}
+function* getTodo({ payload }) {
+  yield axios
+    .get(COMMAN_CONST.BASEURL + `/${payload.id}`)
     .then((response) => response.data);
 }
-function* add(todo) {
+function* addTodo({ payload }) {
   const url = COMMAN_CONST.BASEURL;
   const data = {
-    title: todo.title,
-    description: todo.description,
+    title: payload.title,
+    description: payload.description,
   };
   const options = {
     method: "POST",
@@ -37,11 +44,11 @@ function* add(todo) {
   yield axios(options);
   yield fetchTodos();
 }
-function* edit(todo) {
-  const url = COMMAN_CONST.BASEURL + todo.id;
+function* editTodo({ payload }) {
+  const url = COMMAN_CONST.BASEURL + `/${payload.id}`;
   const data = {
-    title: todo.title,
-    description: todo.description,
+    title: payload.title,
+    description: payload.description,
   };
   const options = {
     method: "PUT",
@@ -49,32 +56,16 @@ function* edit(todo) {
     url,
   };
   yield axios(options);
+  yield put({ type: ACTION_CONT.GET_TODOS_LIST });
 }
-function* deleteNow(todo) {
-  yield axios
-    .delete(COMMAN_CONST.BASEURL + todo.id)
-    .then((response) => {
-      return response.data.todos;
-    })
-    .catch(function (error) {
-      console.log("error");
-    });
-}
-function* addTodo() {
-  yield takeEvery(ACTION_CONT.ADD_TODO, add);
-}
-function* getTodosList() {
-  yield takeEvery(ACTION_CONT.GET_TODOS_LIST, fetchTodos);
-}
-function* getTodo() {
-  yield takeEvery(ACTION_CONT.GET_TODO, fetchTodo);
-}
-function* editTodo() {
-  yield takeEvery(ACTION_CONT.EDIT_TODO, edit);
-}
-function* deleteTodo() {
-  yield takeEvery(ACTION_CONT.DELETE_TODO, deleteNow);
-}
+
 export default function* rootSaga() {
-  yield all([getTodo(), getTodosList(), editTodo(), deleteTodo(), addTodo()]);
+  yield all([
+    yield takeLatest(ACTION_CONT.GET_TODOS_LIST, getTodosList),
+    yield takeLatest(ACTION_CONT.DELETE_TODO, deleteTodo),
+    yield takeLatest(ACTION_CONT.SEARCH_IN_TODO, getTodosList),
+    yield takeLatest(ACTION_CONT.GET_TODO, getTodo),
+    yield takeLatest(ACTION_CONT.ADD_TODO, addTodo),
+    yield takeLatest(ACTION_CONT.EDIT_TODO, editTodo),
+  ]);
 }

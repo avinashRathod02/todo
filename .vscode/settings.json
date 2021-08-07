@@ -12,5 +12,8 @@
     ["()", ["blue"], "Red"],
     ["[]", ["green"], "Red"],
     ["{}", ["white"], "Red"]
-  ]
+  ],
+  "debug.internalConsoleOptions": "neverOpen",
+  "comments.openPanel": "neverOpen",
+  "workbench.panel.opensMaximized": "never"
 }

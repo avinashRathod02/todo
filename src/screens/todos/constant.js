@@ -9,4 +9,5 @@ export const TODOS_CONST = {
   WARNING_MSG: "You want to delete this task ?",
   CANCEL: "Cancel",
   OK: "ok",
+  SEARCH: "Search",
 };

@@ -6,7 +6,6 @@ import { COLOR_CONT } from "../../constants/colors";
 export default function InputField(props) {
   const { input, meta, ...inputProps } = props;
   const inputRef = useRef(null);
-  // console.log(inputRef.current.NativeProp);
   const validationStyles = meta.touched
     ? meta.valid
       ? INPUT_STYLES.valid

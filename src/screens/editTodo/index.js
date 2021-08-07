@@ -8,6 +8,7 @@ import {
   StatusBar,
   Alert,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { connect } from "react-redux";
 import * as action from "../../actions/index";
@@ -32,26 +33,21 @@ class Add extends React.Component {
     const { editMode, id } = this.props.route.params;
     if (editMode) {
       try {
-        console.error(id + "__");
-        axios
-          .get(COMMAN_CONST.BASEURL + id)
-          .then((response) => {
-            console.error(response.data.todo);
-            const title = response.data.todo.title;
-            const description = response.data.todo.description;
-            this.props.dispatch(
-              change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
-            );
-            this.props.dispatch(
-              change(
-                COMMAN_CONST.TODO_FORM,
-                ADD_FORM_CONST.DESC_SMALL,
-                description
-              )
-            );
-            this.setState({ isLoaded: true });
-          })
-          .catch((error) => console.error(error));
+        axios.get(COMMAN_CONST.BASEURL + `/ ${id}`).then((response) => {
+          const title = response.data.todo.title;
+          const description = response.data.todo.description;
+          this.props.dispatch(
+            change(COMMAN_CONST.TODO_FORM, ADD_FORM_CONST.TITLE_SMALL, title)
+          );
+          this.props.dispatch(
+            change(
+              COMMAN_CONST.TODO_FORM,
+              ADD_FORM_CONST.DESC_SMALL,
+              description
+            )
+          );
+          this.setState({ isLoaded: true });
+        });
       } catch (error) {
         this.setState({ isLoaded: true });
       }
