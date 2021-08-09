@@ -48,7 +48,9 @@ const ListItems = (item, index) => {
           numberOfLines={1}
           style={[
             TODOS_STYLES.titleText,
-            // item.item.completed ? { textDecorationLine: "line-through" } : {},
+            item.item.is_completed
+              ? { textDecorationLine: "line-through" }
+              : {},
           ]}
         >
           {item.item.title}

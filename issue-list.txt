@@ -1,3 +1,2 @@
 1 styled-components
-main 2 toggleTodo
 all keyboard avoid in edit
